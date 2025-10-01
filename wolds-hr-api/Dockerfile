@@ -4,8 +4,14 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy csproj and restore
-COPY ["wolds-hr-api/wolds-hr-api.csproj", "./"]
-RUN dotnet restore "wolds-hr-api.csproj"
+COPY wolds-hr-api/wolds-hr-api.csproj ./wolds-hr-api/
+WORKDIR /src/wolds-hr-api
+RUN dotnet restore
+
+COPY wolds-hr-api/. . 
+RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
 
 # Copy rest of the source and build
 COPY . .
