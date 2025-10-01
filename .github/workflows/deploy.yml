@@ -15,9 +15,4 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
     - run: |
         docker build . -f ./wolds-hr-api/Dockerfile -t prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}
-        docker push prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}   
-    - name: Deploy to App Service
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: prod-ap-wolds-hr-ct-api
-        images: prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:latest
+        docker push prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}
