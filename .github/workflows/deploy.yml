@@ -14,5 +14,5 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
     - run: |
-        docker build . -t prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}
+        docker build ./wolds-hr-api -f ./wolds-hr-api/Dockerfile -t prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}
         docker push prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}   
