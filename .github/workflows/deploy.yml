@@ -11,8 +11,8 @@ jobs:
     - uses: azure/docker-login@v1
       with:
         login-server: prodcrglobal.azurecr.io
-        username: ${{ secrets.REGISTRY_USERNAME }}
-        password: ${{ secrets.REGISTRY_PASSWORD }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
     - run: |
         docker build . -t prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}
         docker push prodcrglobal.azurecr.io/prod-ap-wolds-hr-ct-api:${{ github.sha }}   
