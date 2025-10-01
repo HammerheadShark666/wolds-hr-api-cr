@@ -52,4 +52,6 @@ using (var scope = app.Services.CreateScope())
     await DataSeeder.SeedDatabaseAsync(context);
 }
 
+app.MapGet("/health", () => "OK");
+
 app.Run();
