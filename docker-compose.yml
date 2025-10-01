@@ -2,8 +2,8 @@ services:
   wolds-hr-api:
     image: ${DOCKER_REGISTRY-}woldshrapi
     build:
-      context: .
-      dockerfile: wolds-hr-api/Dockerfile
+      context: ./wolds-hr-api
+      dockerfile: Dockerfile 
     ports:
       - "8080:8080"
     environment:

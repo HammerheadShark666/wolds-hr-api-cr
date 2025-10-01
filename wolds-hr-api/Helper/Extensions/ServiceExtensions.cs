@@ -113,7 +113,7 @@ public static class ServiceExtensions
     {
         services.AddDbContext<WoldsHrDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString(Constants.DatabaseConnectionString),
-            options => options.EnableRetryOnFailure()
+            options => options.EnableRetryOnFailure(0)
             .MigrationsAssembly(typeof(WoldsHrDbContext).Assembly.FullName)));
     }
 
