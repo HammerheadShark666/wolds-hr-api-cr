@@ -8,6 +8,7 @@ COPY ["wolds-hr-api.csproj", "./"]
 RUN dotnet restore "wolds-hr-api.csproj"
 
 # Copy all source files
+COPY ["wolds-hr-api.csproj", "./"]
 COPY . ./
 
 # Build & publish
