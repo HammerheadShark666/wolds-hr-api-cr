@@ -4,24 +4,19 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy csproj and restore
-COPY ["wolds-hr-api/wolds-hr-api.csproj", "./"]
+COPY ["wolds-hr-api.csproj", "./"]
 RUN dotnet restore "wolds-hr-api.csproj"
 
-# Copy only API source files
-COPY wolds-hr-api/. .
+# Copy all source files
+COPY . ./
 
-# Build and publish
-RUN dotnet build "wolds-hr-api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# Build & publish
 RUN dotnet publish "wolds-hr-api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-
-# Copy published app
-COPY --from=build /app/publish . 
-
-# Expose port and set environment
+COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:5000
-
 ENTRYPOINT ["dotnet", "wolds-hr-api.dll"]
+
