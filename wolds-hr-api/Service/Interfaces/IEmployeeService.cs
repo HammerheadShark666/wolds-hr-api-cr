@@ -1,9 +1,9 @@
-﻿using wolds_hr_api.Helper.Dto.Requests.Employee;
-using wolds_hr_api.Helper.Dto.Responses;
+﻿using wolds_hr_api.Library.Dto.Requests.Employee;
+using wolds_hr_api.Library.Dto.Responses;
 
 namespace wolds_hr_api.Service.Interfaces;
 
-public interface IEmployeeService
+internal interface IEmployeeService
 {
     Task<EmployeePagedResponse> SearchAsync(string keyword, Guid? departmentId, int page, int pageSize);
     Task<EmployeeResponse?> GetAsync(Guid id);
