@@ -1,9 +1,9 @@
-﻿using wolds_hr_api.Helper.Dto.Requests.Department;
-using wolds_hr_api.Helper.Dto.Responses;
+﻿using wolds_hr_api.Library.Dto.Requests.Department;
+using wolds_hr_api.Library.Dto.Responses;
 
 namespace wolds_hr_api.Service.Interfaces;
 
-public interface IDepartmentService
+internal interface IDepartmentService
 {
     Task<List<DepartmentResponse>> GetAsync();
     Task<DepartmentResponse?> GetAsync(Guid id);

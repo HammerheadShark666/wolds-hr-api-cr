@@ -20,4 +20,3 @@ WORKDIR /app
 COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:5000
 ENTRYPOINT ["dotnet", "wolds-hr-api.dll"]
-

@@ -2,18 +2,16 @@
 using wolds_hr_api.Data.Context;
 using wolds_hr_api.Data.Interfaces;
 using wolds_hr_api.Domain;
-using wolds_hr_api.Helper.Exceptions;
+using wolds_hr_api.Library.Exceptions;
 
 namespace wolds_hr_api.Data;
 
-public class EmployeeRepository(WoldsHrDbContext context) : IEmployeeRepository
+internal sealed class EmployeeRepository(WoldsHrDbContext woldsHrDbContext) : IEmployeeRepository
 {
-    private readonly WoldsHrDbContext _context = context;
-
     public async Task<(List<Employee>, int)> GetAsync(string keyword, Guid? departmentId, int page, int pageSize)
     {
-        var query = from e in _context.Employees
-                    join d in _context.Departments on e.DepartmentId equals d.Id into dept
+        var query = from e in woldsHrDbContext.Employees
+                    join d in woldsHrDbContext.Departments on e.DepartmentId equals d.Id into dept
                     from department in dept.DefaultIfEmpty()
                     where EF.Functions.Like(e.Surname, $"{keyword}%")
                     select new Employee
@@ -51,13 +49,13 @@ public class EmployeeRepository(WoldsHrDbContext context) : IEmployeeRepository
 
     public async Task<int> CountAsync()
     {
-        return await _context.Employees.CountAsync();
+        return await woldsHrDbContext.Employees.CountAsync();
     }
 
     public async Task<Employee?> GetAsync(Guid id)
     {
-        return await (from e in _context.Employees
-                      join d in _context.Departments on e.DepartmentId equals d.Id into deptGroup
+        return await (from e in woldsHrDbContext.Employees
+                      join d in woldsHrDbContext.Departments on e.DepartmentId equals d.Id into deptGroup
                       from department in deptGroup.DefaultIfEmpty()
                       where e.Id.Equals(id)
                       select new Employee
@@ -79,14 +77,14 @@ public class EmployeeRepository(WoldsHrDbContext context) : IEmployeeRepository
     public void Add(Employee employee)
     {
         employee.Created = DateOnly.FromDateTime(DateTime.Now);
-        _context.Employees.Add(employee);
+        woldsHrDbContext.Employees.Add(employee);
 
         return;
     }
 
     public async Task<Employee> UpdateAsync(Employee employee)
     {
-        var currentEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+        var currentEmployee = await woldsHrDbContext.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
 
         if (currentEmployee != null)
         {
@@ -103,33 +101,33 @@ public class EmployeeRepository(WoldsHrDbContext context) : IEmployeeRepository
                 currentEmployee.Photo = employee.Photo;
             }
 
-            _context.Employees.Update(currentEmployee);
+            woldsHrDbContext.Employees.Update(currentEmployee);
         }
         else
-            throw new EmployeeNotFoundException("Employee not found");
+            throw new EmployeeNotFoundException();
 
         return employee;
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id.Equals(id));
+        var employee = await woldsHrDbContext.Employees.FirstOrDefaultAsync(e => e.Id.Equals(id));
         if (employee != null)
         {
-            _context.Employees.Remove(employee);
+            woldsHrDbContext.Employees.Remove(employee);
         }
         else
-            throw new EmployeeNotFoundException("Employee not found");
+            throw new EmployeeNotFoundException();
     }
 
     public async Task<bool> ExistsAsync(Guid id)
     {
-        return await _context.Employees.AnyAsync(e => e.Id.Equals(id));
+        return await woldsHrDbContext.Employees.AnyAsync(e => e.Id.Equals(id));
     }
 
     public async Task<bool> ExistsAsync(string surname, string firstName, DateOnly? dateOfBirth)
     {
-        return await _context.Employees.AnyAsync(e => e.Surname == surname
+        return await woldsHrDbContext.Employees.AnyAsync(e => e.Surname == surname
                                                     && e.FirstName == firstName
                                                         && e.DateOfBirth == dateOfBirth);
     }
