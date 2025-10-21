@@ -1,11 +1,11 @@
 services:
-  wolds-hr-api:
+  Wolds.Hr.Api.Cr:
     image: ${DOCKER_REGISTRY-}woldshrapi
     build:
-      context: ./wolds-hr-api
-      dockerfile: Dockerfile 
+      context: .
+      dockerfile: Wolds.Hr.Api.Cr/Dockerfile
     ports:
-      - "8080:8080"
+      - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
@@ -17,5 +17,9 @@ services:
       - JWT_SETTINGS_RESET_PASSWORD_TOKEN_EXPIRY_DAYS=${JWT_SETTINGS_RESET_PASSWORD_TOKEN_EXPIRY_DAYS}
       - JWT_SETTINGS_TOKEN_EXPIRY_MINUTES=${JWT_SETTINGS_TOKEN_EXPIRY_MINUTES}
       - HOST_DOMAIN= ${HOST_DOMAIN}
+      - AZURE_ORIGINAL_URL= ${AZURE_ORIGINAL_URL}
+      - AZURE_CUSTOM_DOMAIN= ${AZURE_CUSTOM_DOMAIN}
+      - AZURE_CUSTOM_DOMAIN_WWW= ${AZURE_CUSTOM_DOMAIN_WWW}  
+
     extra_hosts:
       - "host.docker.internal:host-gateway"

@@ -1,5 +1,5 @@
 services:
-  wolds-hr-api:
+  Wolds.Hr.Api.Cr:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
