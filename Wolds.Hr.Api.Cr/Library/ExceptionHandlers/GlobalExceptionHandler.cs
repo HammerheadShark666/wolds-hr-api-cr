@@ -18,6 +18,7 @@ internal sealed class GlobalExceptionHandler(IProblemDetailsService problemDetai
         var (statusCode, message) = exception switch
         {
             DepartmentNotFoundException or EmployeeNotFoundException => ((int)HttpStatusCode.NotFound, exception.Message),
+            MaxNumberOfEmployeesReachedException => ((int)HttpStatusCode.BadRequest, exception.Message),
             UnauthorizedAccessException => ((int)HttpStatusCode.Unauthorized, "Unauthorized"),
             _ => ((int)HttpStatusCode.InternalServerError, "An unexpected error occurred.")
         };

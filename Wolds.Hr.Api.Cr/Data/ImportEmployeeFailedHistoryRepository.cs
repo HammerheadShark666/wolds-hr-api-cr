@@ -16,6 +16,7 @@ internal sealed class ImportEmployeeFailedHistoryRepository(WoldsHrDbContext wol
     {
         var baseQuery = woldsHrDbContext.ImportEmployeesFailedHistory
                                 .Where(e => e.ImportEmployeeHistoryId == id)
+                                .Include(e => e.Errors)
                                 .AsNoTracking();
 
         var totalEmployees = await baseQuery.CountAsync();

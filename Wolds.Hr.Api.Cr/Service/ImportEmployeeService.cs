@@ -21,7 +21,7 @@ internal sealed class ImportEmployeeService(IValidator<Employee> validator,
         var fileLines = await fileHelper.ReadAllLinesAsync(file);
 
         if (await MaximumNumberOfEmployeesReachedAsync(fileLines))
-            throw new InvalidOperationException($"Maximum number of employees reached: {Constants.MaxNumberOfEmployees}");
+            throw new MaxNumberOfEmployeesReachedException();
 
         return await ImportAsync(fileLines);
     }

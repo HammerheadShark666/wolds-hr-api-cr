@@ -46,6 +46,11 @@ internal sealed class ImportEmployeeHistoryService(IImportEmployeeHistoryUnitOfW
         };
     }
 
+    public async Task<List<ImportEmployeeHistoryLatestResponse>> GetLatestAsync(int numberOfLatestImportsToGet)
+    {
+        return await importEmployeeHistoryUnitOfWork.History.GetLatestAsync(numberOfLatestImportsToGet);
+    }
+
     public async Task DeleteAsync(Guid id)
     {
         await importEmployeeHistoryUnitOfWork.History.DeleteAsync(id);

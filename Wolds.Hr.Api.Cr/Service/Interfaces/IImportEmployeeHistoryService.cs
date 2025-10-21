@@ -9,4 +9,5 @@ internal interface IImportEmployeeHistoryService
     Task<ImportEmployeeFailedHistoryPagedResponse> GetImportedEmployeeFailedHistoryAsync(Guid id, int page, int pageSize);
     Task DeleteAsync(Guid id);
     Task<List<ImportEmployeeHistoryResponse>> GetAsync();
+    Task<List<ImportEmployeeHistoryLatestResponse>> GetLatestAsync(int numberOfLatestImportsToGet);
 }

@@ -1,9 +1,7 @@
 ﻿using Asp.Versioning.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using Wolds.Hr.Api.Cr.Library.Dto.Responses;
-using Wolds.Hr.Api.Cr.Library.Helpers.Interfaces;
 using Wolds.Hr.Api.Cr.Service.Interfaces;
 
 namespace Wolds.Hr.Api.Cr.Endpoint;
@@ -17,25 +15,20 @@ public static class EndpointsImportEmployee
                                                   .WithApiVersionSet(versionSet)
                                                   .MapToApiVersion(1.0);
 
-        importEmployeeGroup.MapPost("", async (HttpRequest request, [FromServices] IImportEmployeeService importEmployeeService, IFileHelper fileHelper) =>
+        importEmployeeGroup.MapPost("", async (IFormFile importFile, IImportEmployeeService importEmployeeService) =>
         {
-            if (!request.HasFormContentType)
-                return Results.BadRequest(new { Message = "Invalid content type." });
+            if (importFile == null || importFile.Length == 0)
+                return Results.BadRequest(new { Message = "No data in import file." });
 
-            var file = await fileHelper.GetFileAsync(request);
-            if (file == null || !fileHelper.FileHasContent(file))
-                return Results.BadRequest(new { Message = "No data in file." });
-
-            var result = await importEmployeeService.ImportFromFileAsync(file);
+            var result = await importEmployeeService.ImportFromFileAsync(importFile);
 
             return Results.Ok(result);
-
-
         })
         .Accepts<IFormFile>("multipart/form-data")
         .Produces<ImportEmployeeHistorySummaryResponse>((int)HttpStatusCode.OK)
         .WithName("ImportEmployees")
         .RequireAuthorization()
+        .DisableAntiforgery()
         .WithOpenApi(x => new OpenApiOperation(x)
         {
             Summary = "Import employees",
